@@ -1,0 +1,339 @@
+/* 三餐日記 — screen styles built on the Industry design system.
+   Every color, shadow and radius comes from ds/industry/styles.css tokens;
+   the pixel values here are the ones the design file specifies. */
+
+:root {
+  /* The system's heading/body faces with a Traditional Chinese fallback. */
+  --font-heading-cjk: "Barlow Condensed", "Noto Sans TC", system-ui, sans-serif;
+  --font-body-cjk: "Barlow", "Noto Sans TC", system-ui, sans-serif;
+  --dim-55: color-mix(in srgb, var(--color-text) 55%, transparent);
+  --dim-50: color-mix(in srgb, var(--color-text) 50%, transparent);
+  --dim-45: color-mix(in srgb, var(--color-text) 45%, transparent);
+  --dim-32: color-mix(in srgb, var(--color-text) 32%, transparent);
+}
+
+body { margin: 0; background: var(--color-neutral-300); font-family: var(--font-body-cjk); }
+h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading-cjk); }
+a { color: var(--color-accent-700); }
+a:hover { color: var(--color-accent-900); }
+
+/* ── shell ───────────────────────────────────────────────────────────── */
+.stage { min-height: 100vh; display: grid; place-items: center; padding: 44px 20px; }
+.phone {
+  width: 390px; height: 844px; max-height: calc(100vh - 88px);
+  background: var(--color-bg);
+  display: flex; flex-direction: column; overflow: hidden; box-shadow: var(--shadow-lg);
+}
+.statusbar {
+  flex: none; display: flex; justify-content: space-between; align-items: center;
+  padding: 11px 20px 3px; font-size: 11px; letter-spacing: .06em; color: var(--dim-55);
+}
+.statusbar-brand { font-family: var(--font-heading); letter-spacing: .14em; }
+.scr { flex: 1; overflow-y: auto; overflow-x: hidden; }
+.scr::-webkit-scrollbar { width: 0; height: 0 }
+
+/* ── shared ──────────────────────────────────────────────────────────── */
+.pad { padding: 14px 20px 24px }
+.kicker { margin: 0 0 3px; color: var(--color-accent-700) }
+.screen-title { margin: 0; font-size: 29px }
+.note { font-size: 11px; color: var(--dim-50) }
+.note-gap { margin-top: 5px }
+.num { font-family: var(--font-heading-cjk); line-height: 1 }
+.tags { display: flex; gap: 5px; flex-wrap: wrap }
+.tags-gap { gap: 6px; margin-top: 12px }
+button.tag { font: inherit; font-size: 11px; background: transparent; cursor: pointer }
+.tag-pick { font-size: 12px }
+.tag-pick.on { background: var(--color-accent); color: var(--color-bg) }
+button.seg-opt { font: inherit; font-size: 13px; background: transparent; border: 0; color: inherit }
+.panel { padding: 14px }
+.panel-gap { margin-top: 16px }
+.empty { padding: 34px 4px; text-align: center; font-size: 13px; color: var(--dim-50) }
+.section-head { margin: 22px 0 8px; color: var(--color-accent-700) }
+.text-btn {
+  border: 0; background: transparent; padding: 0; font-size: 13px;
+  color: var(--color-accent-700); cursor: pointer; font-family: inherit;
+}
+.text-btn:hover { color: var(--color-accent-900) }
+.back-btn { padding: 0 0 10px }
+.link-btn {
+  border: 0; background: transparent; padding: 0; font: inherit; font-size: 11px;
+  color: var(--color-accent-700); cursor: pointer; text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ── today ───────────────────────────────────────────────────────────── */
+.today-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 10px; margin-bottom: 16px }
+.today-total { text-align: right; flex: none }
+.today-total .num { font-size: 23px }
+.today-total .note { color: var(--dim-55) }
+.slot-list { display: flex; flex-direction: column; gap: 16px }
+
+.meal-card {
+  width: 100%; padding: 11px; display: flex; gap: 12px; text-align: left;
+  background: transparent; font-family: inherit; color: inherit; cursor: pointer;
+}
+.meal-card:hover { background: var(--color-accent-100) }
+.thumb {
+  width: 82px; height: 82px; flex: none; border: 1px solid var(--color-divider);
+  background: var(--color-neutral-200); display: grid; place-items: center;
+  font-size: 10px; letter-spacing: .1em; color: var(--color-neutral-600);
+}
+.thumb img, .day-photo img, .result-thumb img, .photo-drop img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+.meal-body { min-width: 0; flex: 1; display: flex; flex-direction: column }
+.meal-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px }
+.meal-top h6 { margin: 0; color: var(--color-accent-700) }
+.meal-time { font-size: 11px; color: var(--dim-55) }
+.meal-name {
+  font-family: var(--font-heading-cjk); font-size: 20px; line-height: 1.2; margin: 3px 0 auto;
+  overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+}
+.meal-foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 8px; margin-top: 8px }
+.meal-price { font-family: var(--font-heading-cjk); font-size: 17px; flex: none }
+
+.slot-empty {
+  width: 100%; height: 104px; border: 1px dashed var(--dim-32); background: transparent;
+  color: var(--color-accent-700); font-family: var(--font-heading-cjk); font-size: 19px;
+  cursor: pointer; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 4px;
+}
+.slot-empty:hover { background: var(--color-accent-100) }
+.slot-empty .plus { font-size: 22px; line-height: 1 }
+.line-btn {
+  width: 100%; min-height: 44px; margin-top: 14px; border: 1px solid var(--color-divider);
+  background: transparent; color: var(--color-accent-700);
+  font-family: var(--font-heading-cjk); font-size: 16px; cursor: pointer;
+}
+.line-btn:hover { background: var(--color-accent-100) }
+
+/* ── add / edit form ─────────────────────────────────────────────────── */
+.form-head { padding: 14px 20px 10px; display: flex; justify-content: space-between; align-items: center; gap: 8px }
+.form-title { margin: 0 }
+.form-date { font-size: 13px; color: var(--dim-45) }
+.photo-drop {
+  display: flex; margin: 4px 20px 0; padding: 0; height: 260px; width: calc(100% - 40px);
+  border: 1px solid var(--color-divider); background: var(--color-neutral-200);
+  flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+  color: var(--color-neutral-700); cursor: pointer; font-family: inherit;
+}
+.cam-icon { width: 44px; height: 34px; border: 1.5px solid currentColor; position: relative }
+.cam-icon span { position: absolute; inset: 0; margin: auto; width: 15px; height: 15px; border: 1.5px solid currentColor; border-radius: 50% }
+.photo-hint { font-size: 12px; letter-spacing: .1em }
+.photo-actions { padding: 8px 20px 0; display: flex; gap: 8px }
+.photo-actions .btn { flex: 1; min-height: 44px }
+.form-body { padding: 18px 20px 24px; display: flex; flex-direction: column; gap: 16px }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px }
+.field-label { font-size: 12px; display: block; margin-bottom: 6px; color: color-mix(in srgb, var(--color-text) 60%, transparent) }
+.seg-full { display: flex; width: 100% }
+.seg-full .seg-opt { flex: 1; justify-content: center; padding: 7px 4px; font-size: 12px }
+/* Beats the design system's `.seg-opt:not(:has(input:checked)):hover` — this
+   control marks its selection with a class, not a checked radio. */
+.seg-opt.on, button.seg-opt.on:hover { background: var(--color-accent); color: var(--color-bg) }
+.seg-opt:not(.on):hover { background: color-mix(in srgb, var(--color-text) 7%, transparent) }
+.form-actions { margin-top: 2px; display: flex; flex-direction: column; gap: 10px }
+.form-actions .btn-save { min-height: 48px; font-size: 16px }
+.form-actions .btn-del { min-height: 44px; color: var(--color-accent-800) }
+
+/* ── month ───────────────────────────────────────────────────────────── */
+.month-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; margin-bottom: 14px }
+.month-arrows { display: flex; gap: 6px; flex: none }
+.icon-btn {
+  width: 34px; height: 34px; border: 1px solid var(--color-divider); background: transparent;
+  color: var(--color-accent-700); cursor: pointer; display: grid; place-items: center;
+  font-size: 17px; line-height: 1; font-family: var(--font-heading-cjk);
+}
+.icon-btn:hover { background: var(--color-accent-100) }
+.cal-dow {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; font-size: 11px;
+  text-align: center; color: var(--dim-50); margin-bottom: 5px;
+}
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px }
+.cal-day {
+  width: 100%; aspect-ratio: 1; border: 1px solid var(--color-divider); background: transparent;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+  cursor: pointer; padding: 0; font-family: inherit; font-size: 12px; color: inherit;
+}
+.cal-day:hover { background: var(--color-accent-100) }
+.cal-day.today { border-color: var(--color-accent); background: var(--color-accent-100) }
+.cal-pad { display: block; aspect-ratio: 1 }
+.cal-dots { display: flex; gap: 2px; height: 4px }
+.cal-dots i { width: 4px; height: 4px; background: var(--color-accent) }
+
+/* ── stats ───────────────────────────────────────────────────────────── */
+.kpi { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px }
+.kpi .num { font-size: 25px }
+.kpi .note { color: var(--dim-55) }
+.range-seg { margin-bottom: 16px }
+.range-seg .seg-opt { min-height: 40px; display: flex; align-items: center; justify-content: center }
+.bars { display: flex; align-items: flex-end; gap: 8px; height: 118px; margin-top: 10px }
+.bars i { flex: 1; background: var(--color-accent); min-height: 1px }
+.bar-labels { display: flex; gap: 8px; margin-top: 6px; font-size: 11px; color: var(--dim-55) }
+.bar-labels span { flex: 1; text-align: center }
+.rate-list { display: flex; flex-direction: column; gap: 9px }
+.rate-row { display: flex; align-items: center; gap: 10px }
+.rate-slot { width: 32px; font-size: 12px; flex: none }
+.rate-track { flex: 1; height: 9px; border: 1px solid var(--color-divider); display: block; position: relative }
+.rate-track i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--color-accent) }
+.rate-pct { width: 38px; text-align: right; font-family: var(--font-heading-cjk); font-size: 15px; flex: none }
+.table td:nth-child(n+2) { text-align: right }
+
+/* ── day detail ──────────────────────────────────────────────────────── */
+.day-list { display: flex; flex-direction: column; gap: 20px }
+.day-photo {
+  height: 180px; border: 1px solid var(--color-divider); background: var(--color-neutral-200);
+  display: grid; place-items: center; font-size: 10px; letter-spacing: .1em; color: var(--color-neutral-600);
+}
+.day-meta { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-top: 10px }
+.day-meta h6 { margin: 0 0 2px; color: var(--color-accent-700) }
+.day-name { font-family: var(--font-heading-cjk); font-size: 20px }
+.day-place { font-size: 11px; color: var(--dim-55); margin-top: 2px }
+.day-price { font-family: var(--font-heading-cjk); font-size: 18px; flex: none }
+.day-foot { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 8px }
+.day-actions { display: flex; gap: 6px; flex: none }
+.btn-line {
+  min-height: 44px; padding: 0 14px; border: 1px solid var(--color-divider); background: transparent;
+  font-family: inherit; font-size: 13px; color: var(--color-accent-700); cursor: pointer;
+}
+.btn-line:hover { background: var(--color-accent-100) }
+.btn-line.subtle { color: color-mix(in srgb, var(--color-text) 65%, transparent) }
+.btn-line.subtle:hover { background: var(--color-neutral-200) }
+.backfill {
+  width: 100%; min-height: 76px; border: 1px dashed var(--dim-32); background: transparent;
+  color: var(--color-accent-700); font-family: var(--font-heading-cjk); font-size: 17px;
+  cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+}
+.backfill:hover { background: var(--color-accent-100) }
+.backfill .sub { font-family: var(--font-body-cjk); font-size: 11px; color: var(--dim-50) }
+
+/* ── search ──────────────────────────────────────────────────────────── */
+.results-head { margin: 22px 0 8px }
+.result-list { display: flex; flex-direction: column; gap: 12px }
+.result {
+  width: 100%; padding: 10px; display: flex; gap: 11px; align-items: center; text-align: left;
+  background: transparent; font-family: inherit; color: inherit; cursor: pointer;
+}
+.result:hover { background: var(--color-accent-100) }
+.result-thumb {
+  width: 58px; height: 58px; flex: none; border: 1px solid var(--color-divider);
+  background: var(--color-neutral-200);
+}
+.result-body { flex: 1; min-width: 0 }
+.result-title { font-family: var(--font-heading-cjk); font-size: 18px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.result-meta { font-size: 11px; color: var(--dim-55) }
+.result-price { font-family: var(--font-heading-cjk); font-size: 16px; flex: none }
+
+/* ── settings ────────────────────────────────────────────────────────── */
+.rows { padding: 4px 14px }
+.row {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 13px 0; border-bottom: 1px solid var(--color-divider); font-size: 14px;
+}
+.rows > .row:last-child, .rows > .reminder-row:last-child { border-bottom: 0 }
+.row-btn { width: 100%; background: transparent; border: 0; font: inherit; color: inherit; cursor: pointer; text-align: left }
+.row-btn:hover { color: var(--color-accent-700) }
+.row-value { font-size: 13px; color: var(--dim-55); flex: none }
+.row-value.danger { color: var(--color-accent-800) }
+.reminder-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 12px 0; border-bottom: 1px solid var(--color-divider);
+}
+.reminder-slot { font-family: var(--font-heading-cjk); font-size: 18px }
+.time-input {
+  border: 0; background: transparent; padding: 0; font: inherit; font-family: var(--font-body-cjk);
+  font-size: 11px; color: var(--dim-55); cursor: pointer;
+}
+.time-input::-webkit-calendar-picker-indicator { display: none }
+.time-input:hover { color: var(--color-accent-700) }
+.switch {
+  height: 44px; width: 60px; flex: none; display: flex; align-items: center; justify-content: flex-end;
+  cursor: pointer; background: transparent; border: 0; padding: 0;
+}
+.switch-track { width: 42px; height: 22px; border: 1px solid var(--color-divider); position: relative; display: block; background: transparent }
+.switch-track i { position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; background: var(--color-neutral-400) }
+.switch.on .switch-track { background: var(--color-accent) }
+.switch.on .switch-track i { left: 22px; background: #fff }
+
+.push { padding: 12px; background: var(--color-neutral-200) }
+.push-row { display: flex; gap: 11px; align-items: flex-start }
+.push-icon {
+  width: 34px; height: 34px; flex: none; border: 1px solid var(--color-accent-700);
+  background: var(--color-accent); color: #fff; display: grid; place-items: center;
+  font-family: var(--font-heading-cjk); font-size: 13px; letter-spacing: .04em;
+}
+.push-body { flex: 1; min-width: 0 }
+.push-meta { display: flex; justify-content: space-between; gap: 8px; font-size: 11px; color: var(--dim-55) }
+.push-meta .app { letter-spacing: .08em }
+.push-title { font-family: var(--font-heading-cjk); font-size: 17px; margin-top: 2px }
+.push-text { font-size: 12.5px; line-height: 1.45 }
+.push-actions { display: flex; gap: 8px; margin-top: 11px; border-top: 1px solid var(--color-divider); padding-top: 9px }
+.push-actions span { flex: 1; text-align: center; font-size: 12px; color: var(--dim-55) }
+.push-actions .lead { color: var(--color-accent-700) }
+.push-actions .div { width: 1px; flex: none; background: var(--color-divider) }
+.export-hint { font-size: 12px; line-height: 1.5; margin-top: 10px; color: color-mix(in srgb, var(--color-text) 60%, transparent) }
+.export-btn { min-height: 44px; margin-top: 12px }
+.sync-btn { min-height: 44px; margin-top: 12px }
+
+/* ── toast, dialog, tab bar ──────────────────────────────────────────── */
+.toast {
+  position: absolute; left: 20px; right: 20px; bottom: 104px; padding: 12px 14px;
+  background: var(--color-accent-900); color: var(--color-neutral-100); font-size: 13.5px;
+  box-shadow: var(--shadow-md); z-index: 5;
+}
+.overlay {
+  position: absolute; inset: 0; background: color-mix(in srgb, #1d1f20 45%, transparent);
+  display: grid; place-items: center; padding: 28px; z-index: 9;
+}
+.modal { width: 100%; padding: 18px; background: var(--color-bg); box-shadow: var(--shadow-lg) }
+.modal h4 { margin: 0 0 6px }
+.modal p { margin: 0 0 16px; font-size: 13.5px; color: color-mix(in srgb, var(--color-text) 65%, transparent) }
+.modal-actions { display: flex; gap: 10px }
+.modal-actions .btn { flex: 1; min-height: 44px }
+
+.tabbar { position: relative; flex: none; border-top: 1px solid var(--color-divider); background: var(--color-bg) }
+.tabs { display: grid; grid-template-columns: repeat(5, 1fr); padding: 8px 6px 18px }
+.tab {
+  border: 0; background: transparent; padding: 6px 0; cursor: pointer; display: flex;
+  flex-direction: column; align-items: center; gap: 4px; color: var(--dim-45); font-family: inherit;
+}
+.tab.on { color: var(--color-accent-700) }
+.tab i { width: 15px; height: 15px; border: 1.5px solid currentColor }
+.tab span { font-size: 11px }
+.fab {
+  position: absolute; left: 50%; top: -72px; translate: -50% 0; width: 56px; height: 56px;
+  border: 1px solid var(--color-accent-700); background: var(--color-accent); color: #fff;
+  font-size: 27px; line-height: 1; cursor: pointer; box-shadow: var(--shadow-md);
+  font-family: var(--font-heading-cjk); z-index: 6;
+}
+.fab:hover { background: var(--color-accent-600) }
+.fab[hidden] { display: none }
+
+/* ── phone-sized viewports: the frame becomes the app ────────────────── */
+@media (max-width: 460px) {
+  .stage { padding: 0; min-height: 100dvh }
+  .phone { width: 100%; height: 100dvh; max-height: none; box-shadow: none; border: 0 }
+  .phone > .corner { display: none }
+  .statusbar { padding-top: calc(11px + env(safe-area-inset-top)) }
+  .tabs { padding-bottom: calc(18px + env(safe-area-inset-bottom)) }
+}
+
+/* ── installed to the home screen ────────────────────────────────────── */
+/* The mock status bar is part of the phone-frame illusion; once the app runs
+   standalone the device draws a real one right on top of it. */
+@media (display-mode: standalone) {
+  .statusbar { display: none }
+  .phone { padding-top: env(safe-area-inset-top) }
+}
+
+/* ── print / PDF album ───────────────────────────────────────────────── */
+.print-view { display: none }
+@media print {
+  body { background: #fff }
+  .stage { display: none }
+  .print-view:not([hidden]) { display: block; padding: 0 }
+  .print-day { break-inside: avoid; margin-bottom: 18px }
+  .print-day h3 { margin: 0 0 6px; border-bottom: 1px solid var(--color-divider); padding-bottom: 4px }
+  .print-meal { display: flex; gap: 12px; break-inside: avoid; margin-bottom: 10px }
+  .print-meal img { width: 120px; height: 90px; object-fit: cover; border: 1px solid var(--color-divider) }
+  @page { margin: 14mm }
+}
