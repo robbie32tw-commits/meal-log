@@ -4,6 +4,9 @@ An implementation of the `三餐日記.dc.html` design as a working app — no b
 no dependencies, no backend. Records and photos live in the browser (IndexedDB);
 preferences live in localStorage.
 
+Deployed at <https://robbie32tw-commits.github.io/meal-log/> — installable from
+there, and it opens offline once the service worker has cached the shell.
+
 ## Run
 
 ```bash
@@ -27,6 +30,9 @@ Below 460px wide the app fills the screen; above that it renders in the design's
 | `js/db.js` | IndexedDB store for records (photos are Blobs on the record) |
 | `js/settings.js` | Preferences and reminder config |
 | `js/app.js` | State, screens, actions |
+| `manifest.webmanifest` | Home-screen name, icons, standalone display |
+| `sw.js` | Precaches the shell so the app opens offline — bump `VERSION` when a cached file changes |
+| `icons/` | Home-screen icons (192/512, maskable, apple-touch) |
 
 Take colors, type, spacing and shadows from the `ds/industry/styles.css` tokens
 rather than hard-coding values — see that project's `readme.md` for the rules.
