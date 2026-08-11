@@ -2,6 +2,11 @@
 
 const KEY = 'sancan.settings';
 
+/* Shown in 設定 so you can tell which build a device is actually running —
+   the phone keeps the old files until the service worker swaps them in.
+   Bump this and sw.js's VERSION together when deploying. */
+export const APP_VERSION = '1.0.0';
+
 const DEFAULTS = () => ({
   /* One nightly nudge to write the day down, rather than a ping per meal. */
   reminder: { on: true, time: '22:30' },

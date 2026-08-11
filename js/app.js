@@ -3,7 +3,7 @@
    so nothing on screen is mock data. */
 
 import { DB } from './db.js';
-import { S, saveSettings, PHOTO_PRESET } from './settings.js';
+import { S, saveSettings, PHOTO_PRESET, APP_VERSION } from './settings.js';
 import * as U from './util.js';
 
 const C = '<i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>';
@@ -450,7 +450,11 @@ function settingsView() {
   return `<div class="pad">
     <h2 class="screen-title" style="margin-bottom:18px">設定與提醒</h2>
 
-    <h6 class="section-head" style="margin-top:0">睡前提醒</h6>
+    <div class="blueprint rows">${C}
+      <div class="row">版本<span class="row-value">${APP_VERSION}</span></div>
+    </div>
+
+    <h6 class="section-head">睡前提醒</h6>
     <div class="blueprint rows">${C}
       <div class="reminder-row">
         <div>
