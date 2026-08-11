@@ -450,31 +450,29 @@ function settingsView() {
   return `<div class="pad">
     <h2 class="screen-title" style="margin-bottom:18px">設定與提醒</h2>
 
-    <h6 class="section-head" style="margin-top:0">用餐提醒</h6>
+    <h6 class="section-head" style="margin-top:0">睡前提醒</h6>
     <div class="blueprint rows">${C}
-      ${U.SLOTS.map(slot => {
-        const r = S.reminders[slot];
-        return `<div class="reminder-row">
-          <div>
-            <div class="reminder-slot">${slot}</div>
-            <input class="time-input" type="time" value="${r.time}" data-reminder-time="${slot}">
-          </div>
-          <button class="switch${r.on ? ' on' : ''}" data-act="toggle-reminder" data-arg="${slot}"
-            role="switch" aria-checked="${r.on}" aria-label="${slot}提醒">
-            <span class="switch-track"><i></i></span>
-          </button>
-        </div>`;
-      }).join('')}
+      <div class="reminder-row">
+        <div>
+          <div class="reminder-slot">每天提醒</div>
+          <input class="time-input" type="time" value="${S.reminder.time}" data-reminder-time>
+        </div>
+        <button class="switch${S.reminder.on ? ' on' : ''}" data-act="toggle-reminder"
+          role="switch" aria-checked="${S.reminder.on}" aria-label="睡前提醒">
+          <span class="switch-track"><i></i></span>
+        </button>
+      </div>
     </div>
+    <div class="note note-gap">到時間若還有沒記錄的餐才會通知。只有 App 開著時才跳得出來——背景排程要原生 App 或推播服務。</div>
 
     <h6 class="section-head">推播樣式</h6>
     <div class="blueprint push">${C}
       <div class="push-row">
         <div class="push-icon">日記</div>
         <div class="push-body">
-          <div class="push-meta"><span class="app">三餐日記</span><span>12:00</span></div>
-          <div class="push-title">午餐時間</div>
-          <div class="push-text">還沒記錄午餐。長按可直接拍照。</div>
+          <div class="push-meta"><span class="app">三餐日記</span><span>${U.esc(S.reminder.time)}</span></div>
+          <div class="push-title">睡前記一下</div>
+          <div class="push-text">今天還沒記錄午餐、晚餐。長按可直接拍照。</div>
         </div>
       </div>
       <div class="push-actions">
@@ -579,7 +577,7 @@ function bindScreen() {
     root.querySelectorAll('[data-reminder-time]').forEach(el => {
       el.addEventListener('click', () => el.showPicker?.());
       el.addEventListener('change', () => {
-        S.reminders[el.dataset.reminderTime].time = el.value;
+        S.reminder.time = el.value;
         saveSettings();
         scheduleReminders();
         render();
@@ -767,29 +765,28 @@ restoreInput.addEventListener('change', async () => {
 
 /* ── reminders ───────────────────────────────────────────────────────── */
 
-let timers = [];
+let timer = null;
 function scheduleReminders() {
-  timers.forEach(clearTimeout);
-  timers = [];
-  if (!('Notification' in window) || Notification.permission !== 'granted') return;
+  clearTimeout(timer);
+  timer = null;
+  const r = S.reminder;
+  if (!r.on || !('Notification' in window) || Notification.permission !== 'granted') return;
 
   const at = new Date();
-  for (const slot of U.SLOTS) {
-    const r = S.reminders[slot];
-    if (!r.on) continue;
-    const [h, mi] = r.time.split(':').map(Number);
-    const when = new Date(at.getFullYear(), at.getMonth(), at.getDate(), h, mi, 0, 0);
-    if (when <= at) continue;
-    timers.push(setTimeout(() => {
-      if (!mealsOn(U.todayYmd()).some(m => m.slot === slot)) {
-        new Notification(`${slot}時間`, { body: `還沒記錄${slot}。` });
-      }
-    }, when - at));
-  }
+  const [h, mi] = r.time.split(':').map(Number);
+  const when = new Date(at.getFullYear(), at.getMonth(), at.getDate(), h, mi, 0, 0);
+  if (when <= at) when.setDate(when.getDate() + 1);
+  timer = setTimeout(() => {
+    const logged = mealsOn(U.todayYmd());
+    const missing = U.SLOTS.filter(s => !logged.some(m => m.slot === s));
+    /* Nothing to write down means nothing worth interrupting for. */
+    if (missing.length) new Notification('睡前記一下', { body: `今天還沒記錄${missing.join('、')}。` });
+    scheduleReminders();
+  }, when - at);
 }
 
-async function toggleReminder(slot) {
-  const r = S.reminders[slot];
+async function toggleReminder() {
+  const r = S.reminder;
   r.on = !r.on;
   saveSettings();
   render();
@@ -921,7 +918,7 @@ const ACTIONS = {
     render();
   },
 
-  'toggle-reminder': arg => toggleReminder(arg),
+  'toggle-reminder': () => toggleReminder(),
   'cycle-pref': arg => {
     const p = PREFS[arg];
     S[arg] = p.values[(p.values.indexOf(S[arg]) + 1) % p.values.length];

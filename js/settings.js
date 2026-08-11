@@ -3,11 +3,8 @@
 const KEY = 'sancan.settings';
 
 const DEFAULTS = () => ({
-  reminders: {
-    早餐: { on: true, time: '08:00' },
-    午餐: { on: true, time: '12:00' },
-    晚餐: { on: false, time: '19:00' },
-  },
+  /* One nightly nudge to write the day down, rather than a ping per meal. */
+  reminder: { on: true, time: '22:30' },
   autoSlot: true,        // pick the meal slot from the clock when adding
   photoQuality: '標準',
   currency: 'TWD',
@@ -25,7 +22,7 @@ function load() {
   const base = DEFAULTS();
   try {
     const saved = JSON.parse(localStorage.getItem(KEY) || '{}');
-    return { ...base, ...saved, reminders: { ...base.reminders, ...(saved.reminders || {}) } };
+    return { ...base, ...saved, reminder: { ...base.reminder, ...(saved.reminder || {}) } };
   } catch {
     return base;
   }
