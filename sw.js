@@ -1,7 +1,7 @@
 /* Offline shell. The app already keeps its data in IndexedDB, so caching the
    static files is all that's needed for it to open with no network at all.
    Bump VERSION whenever a cached file changes — that's what evicts the old copy. */
-const VERSION = 'v3';
+const VERSION = 'v4';
 const CACHE = `meal-log-${VERSION}`;
 const FONTS = `meal-log-fonts-${VERSION}`;
 
